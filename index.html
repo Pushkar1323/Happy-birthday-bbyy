@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Cutie! 🎂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #ff6b9d;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
+            to { text-shadow: 0 0 30px rgba(255, 107, 157, 0.8), 0 0 40px rgba(255, 107, 157, 0.4); }
+        }
+
+        .cake {
+            position: relative;
+            margin: 30px auto;
+        }
+
+        /* Candles Container */
+        .candles {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: -10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .candle {
+            position: relative;
+            width: 15px;
+            height: 60px;
+            background: linear-gradient(to right, #ff9a9e, #fecfef);
+            border-radius: 3px;
+        }
+
+        .flame-container {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 20px;
+            height: 35px;
+            background: linear-gradient(to top, #ff6b35, #ffcc02, #ffff66);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 0.3s ease-in-out infinite alternate;
+            box-shadow: 0 0 20px #ff9500, 0 0 40px #ff6b35, 0 0 60px #ff4500;
+        }
+
+        .flame.blown {
+            animation: blowOut 0.5s forwards;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        @keyframes blowOut {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5, 0.5); opacity: 0.5; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .wick {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 10px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        /* Cake Layers */
+        .cake-layer {
+            border-radius: 15px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .layer-top {
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(to bottom, #ff6b9d, #c44569);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .layer-middle {
+            width: 240px;
+            height: 50px;
+            background: linear-gradient(to bottom, #ff9ff3, #f368e0);
+            margin: 0 auto;
+        }
+
+        .layer-bottom {
+            width: 280px;
+            height: 60px;
+            background: linear-gradient(to bottom, #ffeaa7, #fdcb6e);
+            border-radius: 0 0 20px 20px;
+            margin: 0 auto;
+        }
+
+        /* Decorations */
+        .cream {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            top: -5px;
+        }
+
+        .cream-dot {
+            width: 20px;
+            height: 25px;
+            background: #fff;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+
+        /* Plate */
+        .plate {
+            width: 320px;
+            height: 20px;
+            background: linear-gradient(to bottom, #dfe6e9, #b2bec3);
+            border-radius: 50%;
+            margin: 0 auto;
+            margin-top: -5px;
+        }
+
+        /* Instructions */
+        .instruction {
+            color: #fff;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .mic-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .mic-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .mic-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        /* Celebration */
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .wish-message {
+            display: none;
+            color: #ff6b9d;
+            font-size: 2rem;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .wish-message.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .volume-meter {
+            width: 200px;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            margin: 15px auto;
+            overflow: hidden;
+        }
+
+        .volume-bar {
+            height: 100%;
+            background: linear-gradient(to right, #00ff88, #00cc66);
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .status {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* Hearts floating */
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatHeart 4s ease-in infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>🎉 Happy Birthday Cutie! 🎉</h1>
+        
+        <div class="cake">
+            <div class="candles">
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame-container">
+                        <div class="flame" id="flame1"></div>
+                    </div>
+                </div>
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame-container">
+                        <div class="flame" id="flame2"></div>
+                    </div>
+                </div>
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame-container">
+                        <div class="flame" id="flame3"></div>
+                    </div>
+                </div>
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame-container">
+                        <div class="flame" id="flame4"></div>
+                    </div>
+                </div>
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame-container">
+                        <div class="flame" id="flame5"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cake-layer layer-top">
+                <div class="cream">
+                    <div class="cream-dot"></div>
+                    <div class="cream-dot"></div>
+                    <div class="cream-dot"></div>
+                    <div class="cream-dot"></div>
+                    <div class="cream-dot"></div>
+                </div>
+            </div>
+            <div class="cake-layer layer-middle"></div>
+            <div class="cake-layer layer-bottom"></div>
+            <div class="plate"></div>
+        </div>
+
+        <p class="instruction" id="instruction">🎤 Button dabao aur phook maro candles pe!</p>
+        
+        <div class="volume-meter">
+            <div class="volume-bar" id="volumeBar"></div>
+        </div>
+        
+        <button class="mic-btn" id="micBtn">🎤 Mic Chalu Karo</button>
+        
+        <p class="status" id="status"></p>
+        
+        <div class="wish-message" id="wishMessage">
+            🎂 Wish karo! Saari khushiyan tumhari! 💕
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        let audioContext;
+        let analyser;
+        let microphone;
+        let isListening = false;
+        let candlesBlown = 0;
+        const totalCandles = 5;
+
+        const micBtn = document.getElementById('micBtn');
+        const volumeBar = document.getElementById('volumeBar');
+        const status = document.getElementById('status');
+        const instruction = document.getElementById('instruction');
+        const wishMessage = document.getElementById('wishMessage');
+        const celebration = document.getElementById('celebration');
+
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '💕';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+                    heart.style.fontSize = (15 + Math.random() * 20) + 'px';
+                    heartsContainer.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 6000);
+                }, i * 400);
+            }
+        }
+        createHearts();
+        setInterval(createHearts, 6000);
+
+        micBtn.addEventListener('click', async () => {
+            if (isListening) {
+                stopListening();
+                return;
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                
+                analyser.fftSize = 256;
+                microphone.connect(analyser);
+                
+                isListening = true;
+                micBtn.textContent = '🔴 Listening... (Phook maro!)';
+                status.textContent = 'Zor se phook maro! 💨';
+                
+                detectBlow();
+                
+            } catch (err) {
+                status.textContent = '❌ Mic permission do pehle!';
+                console.error(err);
+            }
+        });
+
+        function detectBlow() {
+            if (!isListening) return;
+            
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+            
+            // Calculate volume
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / dataArray.length;
+            
+            // Update volume bar
+            volumeBar.style.width = Math.min(average * 2, 100) + '%';
+            
+            // Blow detection threshold
+            if (average > 50 && candlesBlown < totalCandles) {
+                blowCandle();
+            }
+            
+            requestAnimationFrame(detectBlow);
+        }
+
+        function blowCandle() {
+            candlesBlown++;
+            const flame = document.getElementById('flame' + candlesBlown);
+            if (flame) {
+                flame.classList.add('blown');
+            }
+            
+            status.textContent = `🕯️ ${candlesBlown}/${totalCandles} candles blown!`;
+            
+            if (candlesBlown >= totalCandles) {
+                setTimeout(() => {
+                    celebrate();
+                }, 500);
+            }
+        }
+
+        function celebrate() {
+            stopListening();
+            instruction.textContent = '🎉 Yaaay! Happy Birthday! 🎉';
+            wishMessage.classList.add('show');
+            celebration.classList.add('active');
+            
+            // Create confetti
+            const colors = ['#ff6b9d', '#ffd700', '#ff69b4', '#00ff88', '#87ceeb', '#ff6347'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    celebration.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+            
+            micBtn.textContent = '🎂 Wish Complete!';
+            micBtn.disabled = true;
+        }
+
+        function stopListening() {
+            isListening = false;
+            if (audioContext) {
+                audioContext.close();
+            }
+            micBtn.textContent = '🎤 Mic Chalu Karo';
+        }
+    </script>
+</body>
+  </html>
